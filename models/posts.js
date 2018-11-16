@@ -51,8 +51,22 @@ const selectPostsSortByDis = async(lat, lon) =>{
 
 //특정 유저의 게시물 조회 
 const selectPostByUser = async(user_id) =>{
-    const sql =`SELECT * FROM posts WHERE user_id = ?`
-    const result = await db.query(sql, [user_id])
+    let result = {posts:[]}
+
+    const sql1 = `SELECT * FROM users where users.user_id = ?`
+    let user = await db.query(sql1, [user_id])
+    result.user_id = user[0].user_id
+    result.user_name = user[0].user_name
+    result.user_profile = user[0].user_profile
+
+    const sql2 =`SELECT * FROM posts WHERE user_id = ?`
+
+    let p = await db.query(sql2, [user_id])
+    p.forEach(element => {
+        result.posts.push(element)
+    });
+    console.log(result)
+
     return result;
 }
 

@@ -6,18 +6,10 @@ const s3Location = require('../config/s3').region
 /* 모든 포스트 가져오기 */
 const getPosts = async(req, res) => {
     try{
-        let lat = req.params.lat ? req.params.lat : ''
-        let lon = req.params.lon ? req.params.lon : ''
-        let result = await postsLogic.getPosts(lat, lon); 
-        respondJson("Success", result, res, 200);
-    }catch(err){
-        console.log(err);
-        respondOnError(err.message, res, err.statusCode);
-    } 
-}
-const getPostsRecent = async(req, res)=>{
-    try{
-        let result = await postsLogic.getPostsRecent(); 
+        let flag = req.params.flag;
+        let lat = req.query.lat ? req.query.lat : ''
+        let lon = req.query.lon ? req.query.lon : ''
+        let result = await postsLogic.getPosts(flag, lat, lon); 
         respondJson("Success", result, res, 200);
     }catch(err){
         console.log(err);
@@ -28,7 +20,7 @@ const getPostsRecent = async(req, res)=>{
 const getPostByUser = async(req, res) =>{
     try{
         let user_id = req.params.user_id ? req.params.user_id : 0;
-        let result = await postsLogic.getOnePost(user_id); 
+        let result = await postsLogic.getPostByUser(user_id); 
         console.log(result)
         respondJson("Success", result, res, 200);
     }catch(err){
@@ -36,6 +28,7 @@ const getPostByUser = async(req, res) =>{
         respondOnError(err.message, res, err.statusCode);
     } 
 }
+
 const getOnePost = async(req, res) => {
     try{
         let post_id = req.params.post_id ? req.params.post_id : 0;
@@ -74,8 +67,7 @@ module.exports={
     getPosts,
     addPosts,
     getOnePost,
-    getPostByUser,
-    getPostsRecent
+    getPostByUser
 }
 /*
 CREATE TABLE `root`.`posts` (
