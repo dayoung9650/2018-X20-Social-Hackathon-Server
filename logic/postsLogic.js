@@ -2,10 +2,14 @@ const posts = require('../models/posts');
 
 
 /* 모든 포스트 가져오기 (default - 최신순 정렬) */
-const getPosts = async(flag,lat,lon) => {
+const getPosts = async(lat,lon) => {
     let result;
-    if(flag == 0) result = await posts.selectPosts(); //최신순
-    else result = await posts.selectPostsSortByDis(lat, lon); //거리순
+    result = await posts.selectPostsSortByDis(lat, lon); //거리순
+    return result;
+}
+const getPostsRecent = async() => {
+    let result;
+    result = await posts.selectPosts(); //최신순
     return result;
 }
 
@@ -27,5 +31,6 @@ module.exports ={
     getPosts,
     addPosts,
     getOnePost,
-    getPostByUser
+    getPostByUser,
+    getPostsRecent
 }

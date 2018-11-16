@@ -23,7 +23,7 @@ module.exports = {
   port        : 3306,
   user        : 'root',
   password    : 'HEaaFCG7mrsUc6c',
-  database    : 'root',
+  database    : 'innodb',
   serverId    : 256,
   minInterval : 200,
   acquireTimeout: 300,

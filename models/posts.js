@@ -6,7 +6,7 @@ const distance = require('../lib/distance');
 
 //최신순정렬
 const selectPosts = async () => {
-    const sql = `SELECT * FROM posts, users where posts.user_id = users.user_id order by posts.posts_time`
+    const sql = `SELECT * FROM posts, users where posts.user_id = users.user_id order by posts.posts_time desc`
     const result = await db.query(sql)
     return result
 }

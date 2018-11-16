@@ -3,8 +3,9 @@ const router = express.Router()
 const controller = require("../controller/postController")
 const upload = require('../lib/s3.js').getMulter("posts");
 
-/* 모든 포스트 가져오기 (default - 거리순 정렬) */
-router.get("/:flag/:lat/:lon", controller.getPosts) 
+/* 모든 포스트 가져오기 (default - 최신순 정렬) */
+router.get("/recent", controller.getPostsRecent)
+router.get("/:lat/:lon", controller.getPosts)
 
 /* insert */
 router.post('/',  upload.array('img',1), controller.addPosts);

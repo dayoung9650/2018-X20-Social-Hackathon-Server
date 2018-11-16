@@ -2,14 +2,22 @@ const { respondJson, respondOnError } = require('../lib/response');
 const postsLogic  = require('../logic/postsLogic')
 const s3Location = require('../config/s3').region
 
+
 /* 모든 포스트 가져오기 */
 const getPosts = async(req, res) => {
     try{
-        let flag = req.params.flag ? req.params.flag : 0;
         let lat = req.params.lat ? req.params.lat : ''
         let lon = req.params.lon ? req.params.lon : ''
-
-        let result = await postsLogic.getPosts(flag, lat, lon); 
+        let result = await postsLogic.getPosts(lat, lon); 
+        respondJson("Success", result, res, 200);
+    }catch(err){
+        console.log(err);
+        respondOnError(err.message, res, err.statusCode);
+    } 
+}
+const getPostsRecent = async(req, res)=>{
+    try{
+        let result = await postsLogic.getPostsRecent(); 
         respondJson("Success", result, res, 200);
     }catch(err){
         console.log(err);
@@ -66,7 +74,8 @@ module.exports={
     getPosts,
     addPosts,
     getOnePost,
-    getPostByUser
+    getPostByUser,
+    getPostsRecent
 }
 /*
 CREATE TABLE `root`.`posts` (
