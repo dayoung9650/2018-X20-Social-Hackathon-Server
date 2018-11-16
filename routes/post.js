@@ -4,7 +4,7 @@ const controller = require("../controller/postController")
 const upload = require('../lib/s3.js').getMulter("posts");
 
 /* 모든 포스트 가져오기 (default - 거리순 정렬) */
-router.get("/:flag", controller.getPosts) 
+router.get("/:flag/:lat/:lon", controller.getPosts) 
 
 /* insert */
 router.post('/',  upload.array('img',1), controller.addPosts);

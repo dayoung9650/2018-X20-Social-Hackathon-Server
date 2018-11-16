@@ -2,6 +2,7 @@ const s3 = require('../config/s3').region
 const moment = require('moment');
 // var db=require('../config/database');
 const db = require('../lib/db');
+const distance = require('../lib/distance');
 
 //최신순정렬
 const selectPosts = async () => {
@@ -13,7 +14,38 @@ const selectPosts = async () => {
 //거리순 정렬
 const selectPostsSortByDis = async(lat, lon) =>{
     const sql = `SELECT * FROM posts, users where posts.user_id = users.user_id`
-    const result = await db.query(sql)
+    const posts = await db.query(sql)
+
+    let result = [];
+    for( var i = 0 ; i < posts.length ; i++ ) {
+        let distanceData = distance(lat, lon, posts[i].posts_lat , posts[i].posts_lon );
+        let data = {
+            posts_id : posts[i].posts_id ,
+            posts_title : posts[i].posts_title ,
+            posts_img :  posts[i].posts_img ,
+            posts_places : posts[i].posts_places ,
+            posts_info : posts[i].posts_info ,
+            posts_expire : posts[i].posts_expire ,
+            posts_lat : posts[i].posts_lat ,
+            posts_isSell : posts[i].posts_isSell ,
+            user_id : posts[i].user_id ,
+            posts_lon : posts[i].posts_lon ,
+            user_name : posts[i].user_name ,
+            user_profile : posts[i].user_profile ,
+            distance : Number( distanceData.distance ) ,
+            distanceUnit : distanceData.unit
+        }
+        result.push( data ) ;
+    }
+    result.sort( function( a , b ) {
+        var tmpA = a.distance;
+        var tmpB = b.distance;
+        if( a.distanceUnit === 'Km' )
+            tmpA = a.distance * 1000
+        if( b.distanceUnit === 'Km' )
+            tmpB = b.distance * 1000
+        return ( tmpA >= tmpB )? 1 : -1 ;
+    });
     return result
 }
 
