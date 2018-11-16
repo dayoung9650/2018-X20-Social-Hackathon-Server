@@ -10,12 +10,15 @@ const getPosts = async(flag,lat,lon) => {
 }
 
 /* 포스트 등록 */
-const addPosts = async(title, img , places, info, expire, lat, lon, isSell)=>{
-    let result = await posts.insertPosts(title, img, places, info, expire, lat, lon, isSell);
+const addPosts = async(title, img , places, info, expire, lat, lon, isSell, available)=>{
+    let result = await posts.insertPosts(title, img, places, info, expire, lat, lon, isSell, available);
     return result;
 }
-
-const getOnePost = async(user_id)=>{
+const getOnePost = async(post_id)=>{
+    let result = await posts.selectOnePost(post_id)
+    return result;
+}
+const getPostByUser = async(user_id)=>{
     let result = await posts.selectOnePost(user_id);
     return result;
 }
@@ -23,5 +26,6 @@ const getOnePost = async(user_id)=>{
 module.exports ={
     getPosts,
     addPosts,
-    getOnePost
+    getOnePost,
+    getPostByUser
 }

@@ -17,10 +17,21 @@ const getPosts = async(req, res) => {
     } 
 }
 
-const getOnePost = async(req, res) =>{
+const getPostByUser = async(req, res) =>{
     try{
         let user_id = req.params.user_id ? req.params.user_id : 0;
         let result = await postsLogic.getOnePost(user_id); 
+        console.log(result)
+        respondJson("Success", result, res, 200);
+    }catch(err){
+        console.log(err);
+        respondOnError(err.message, res, err.statusCode);
+    } 
+}
+const getOnePost = async(req, res) => {
+    try{
+        let post_id = req.params.post_id ? req.params.post_id : 0;
+        let result = await postsLogic.getOnePost(post_id); 
         console.log(result)
         respondJson("Success", result, res, 200);
     }catch(err){
@@ -42,8 +53,9 @@ const addPosts = async(req, res)=>{
         let lat = req.body.lat;
         let lon  =req.body.lon;
         let isSell = req.body.isSell;
+        let available = req.body.available; 
 
-        let result = await postsLogic.addPosts(title, posts_img, places, info, expire, lat, lon, isSell);
+        let result = await postsLogic.addPosts(title, posts_img, places, info, expire, lat, lon, isSell, available);
         respondJson("Success", result, res, 200);
     }catch(err){
         console.log(err);
@@ -53,7 +65,8 @@ const addPosts = async(req, res)=>{
 module.exports={
     getPosts,
     addPosts,
-    getOnePost
+    getOnePost,
+    getPostByUser
 }
 /*
 CREATE TABLE `root`.`posts` (

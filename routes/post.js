@@ -10,7 +10,8 @@ router.get("/:flag", controller.getPosts)
 router.post('/',  upload.array('img',1), controller.addPosts);
 
 /* 특정 유저가 쓴 글 조회 */
-router.get('/user/:user_id', controller.getOnePost);
+router.get('/user/:user_id', controller.getPostByUser);
 
+router.get("/post/:post_id", controller.getOnePost);
 
 module.exports = router
